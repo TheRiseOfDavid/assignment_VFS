@@ -39,9 +39,9 @@ type FolderOptions struct {
 }
 
 func (fs *VirtualFileSystem) selectUser(userName string) (*User, error) {
-	for _, owner := range fs.owners {
+	for i, owner := range fs.owners {
 		if owner.name == userName {
-			return &owner, nil
+			return &fs.owners[i], nil
 		}
 	}
 	return nil, fmt.Errorf("Error: The [%s] doesn't exist\n", userName)
