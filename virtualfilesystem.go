@@ -1,4 +1,4 @@
-package virtualfilesystem
+package main
 
 import (
 	"bufio"
@@ -6,10 +6,12 @@ import (
 	"io"
 	"os"
 	"strings"
+	"unicode"
 )
 
-type User struct {
-	name string
+type Folder struct {
+	name        string
+	description string
 }
 
 // VirtualFileSystem 出發點
@@ -21,21 +23,62 @@ func createVirtaulFileSystem() *VirtualFileSystem {
 	return &VirtualFileSystem{owners: make([]User, 0)}
 }
 
-func (fs *VirtualFileSystem) registerUser(userName string) (string, error) {
+func isNameValid(str string) bool {
+	for _, char := range str {
+		if !unicode.IsLetter(char) && !unicode.IsDigit(char) {
+			return false
+		}
+	}
+	return true
+}
+
+type FolderOptions struct {
+	userName    string
+	folderName  string
+	description string
+}
+
+func (fs *VirtualFileSystem) selectUser(userName string) (*User, error) {
 	for _, owner := range fs.owners {
 		if owner.name == userName {
-			//fmt.Fprintf(os.Stdout, "Error: The %v has already existed.\n", owner.name)
-			return fmt.Sprintf("Error: The %v has already existed.\n", owner.name),
-				fmt.Errorf("Error: The %s has already existed.", owner.name)
+			return &owner, nil
+		}
+	}
+	return nil, fmt.Errorf("Error: The [%s] doesn't exist\n", userName)
+}
+
+func (fs *VirtualFileSystem) createFolder(folderParma FolderOptions) (string, error) {
+	if !isNameValid(folderParma.folderName) {
+		return "", fmt.Errorf("Error: The [%s] contain invalid chars\n", folderParma.folderName)
+	}
+
+	folderParma.userName = strings.ToLower(folderParma.userName)     //進來程式後都小寫
+	folderParma.folderName = strings.ToLower(folderParma.folderName) //進來程式後都小寫
+
+	owner, err := fs.selectUser(folderParma.userName)
+	if err != nil {
+		return "", err // err 回傳 fmt.Errorf("Error: : The [%s] doesn't exist\n", userName)
+	}
+
+	fmt.Print("The len of folders is ", len(owner.folders), "\n")
+	/*
+		for _, folder := range owner.folders {
+			if folder.name == folderParma.folderName {
+				fmt.Print(folderParma.folderName, "\n")
+			}
+		}
+	*/
+
+	for _, folder := range owner.folders {
+		if folder.name == folderParma.folderName {
+			return "", fmt.Errorf("Error: [%s] has already existed\n", folderParma.folderName)
 		}
 	}
 
-	owner := User{name: userName}
-	fs.owners = append(fs.owners, owner)
-
-	//fmt.Fprintf(os.Stdout, "Add %v successfull. \n", owner.name)
-	return fmt.Sprintf("Add %v successfull. \n", owner.name),
-		fmt.Errorf("Add %s successfull. ", userName)
+	folder := Folder{name: folderParma.folderName, description: folderParma.description}
+	owner.folders = append(owner.folders, folder)
+	fmt.Print("update The len of folders is ", len(owner.folders), "\n")
+	return fmt.Sprintf("Create [%s] successfully. \n", folderParma.folderName), nil
 }
 
 type UnitTestOptions struct {
@@ -54,29 +97,49 @@ func (fs *VirtualFileSystem) commandShell(utOption UnitTestOptions) {
 		command := scanner.Text()
 
 		if command == "exit" {
-			break
+			//if os.Args[1] == "exit" {
+			//break
+			return
 		}
 
 		args := strings.Fields(command)
+		//if len(os.Args) < 2 {
 		if len(args) < 2 {
 			fmt.Println("Invalid command. Usage: command [arguments]")
 			continue
+			//return
+
 		}
 
+		//switch os.Args[0] {
 		switch args[0] {
 		case "register":
+			//msg, err := fs.registerUser(os.Args[2])
 			msg, err := fs.registerUser(args[1])
 			if err != nil {
-				fmt.Fprint(os.Stdout, "Invalid command. Usage: command [arguments]")
+				fmt.Fprint(os.Stdout, err)
+				continue
 			}
 			fmt.Fprint(os.Stdout, msg)
 
+		case "create-folder":
+			parma := FolderOptions{userName: args[1], folderName: args[2]}
+			if len(args) >= 4 {
+				parma.description = args[3]
+			}
+
+			msg, err := fs.createFolder(parma)
+			if err != nil {
+				fmt.Fprint(os.Stdout, err)
+				continue
+			}
+			fmt.Fprint(os.Stdout, msg)
 		}
 	}
 }
 
 func main() {
 	fs := createVirtaulFileSystem()
-	fs.commandShell()
+	fs.commandShell(UnitTestOptions{isUnitTest: 0})
 
 }
