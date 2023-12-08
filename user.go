@@ -10,6 +10,16 @@ type User struct {
 	folders []Folder
 }
 
+func (fs *VirtualFileSystem) isUserExist(userName string) bool {
+	for _, owner := range fs.owners {
+		if owner.name == userName {
+			//fmt.Fprintf(os.Stdout, "Error: The %v has already existed.\n", owner.name)
+			return true
+		}
+	}
+	return false
+}
+
 func (fs *VirtualFileSystem) registerUser(userName string) (string, error) {
 	//需要再補一個 Error: The [username] contain invalid chars.
 	if !isNameValid(userName) {
@@ -17,11 +27,8 @@ func (fs *VirtualFileSystem) registerUser(userName string) (string, error) {
 	}
 
 	userName = strings.ToLower(userName) //進來程式後都小寫
-	for _, owner := range fs.owners {
-		if owner.name == userName {
-			//fmt.Fprintf(os.Stdout, "Error: The %v has already existed.\n", owner.name)
-			return "", fmt.Errorf("Error: The %s has already existed.\n", owner.name)
-		}
+	if fs.isUserExist(userName) {
+		return "", fmt.Errorf("Error: The %s has already existed.\n", userName)
 	}
 
 	owner := &User{name: userName, folders: make([]Folder, 0)}
