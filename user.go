@@ -10,6 +10,24 @@ type User struct {
 	folders []Folder
 }
 
+func (owner *User) selectFolder(folderName string) (*Folder, error) {
+	for i, folder := range owner.folders {
+		if folder.name == folderName {
+			return &owner.folders[i], nil
+		}
+	}
+	return nil, fmt.Errorf("Error: The [%s] doesn't exist.\n", folderName)
+}
+
+func (owner *User) isFolderExists(folderName string) bool {
+	for _, folder := range owner.folders {
+		if folder.name == folderName {
+			return true
+		}
+	}
+	return false
+}
+
 func (fs *VirtualFileSystem) isUserExist(userName string) bool {
 	for _, owner := range fs.owners {
 		if owner.name == userName {
@@ -18,6 +36,15 @@ func (fs *VirtualFileSystem) isUserExist(userName string) bool {
 		}
 	}
 	return false
+}
+
+func (fs *VirtualFileSystem) selectUser(userName string) (*User, error) {
+	for i, owner := range fs.owners {
+		if owner.name == userName {
+			return &fs.owners[i], nil // 細節: golang iterator 是 copy constructor
+		}
+	}
+	return nil, fmt.Errorf("Error: The [%s] doesn't exist\n", userName)
 }
 
 func (fs *VirtualFileSystem) registerUser(userName string) (string, error) {

@@ -12,6 +12,7 @@ type Folder struct {
 	name        string
 	description string
 	created     string
+	files       []File
 }
 
 type FolderOptions struct {
@@ -23,13 +24,8 @@ type FolderOptions struct {
 	newFolderName string
 }
 
-func (fs *VirtualFileSystem) selectUser(userName string) (*User, error) {
-	for i, owner := range fs.owners {
-		if owner.name == userName {
-			return &fs.owners[i], nil // 細節: golang iterator 是 copy constructor
-		}
-	}
-	return nil, fmt.Errorf("Error: The [%s] doesn't exist\n", userName)
+func (f Folder) getName() string {
+	return f.name
 }
 
 func (fs *VirtualFileSystem) createFolder(folderParma FolderOptions) (string, error) {
@@ -54,14 +50,12 @@ func (fs *VirtualFileSystem) createFolder(folderParma FolderOptions) (string, er
 		}
 	*/
 
-	for _, folder := range owner.folders {
-		if folder.name == folderParma.folderName {
-			return "", fmt.Errorf("Error: [%s] has already existed\n", folderParma.folderName)
-		}
+	if owner.isFolderExists(folderParma.folderName) {
+		return "", fmt.Errorf("Error: [%s] has already existed\n", folderParma.folderName)
 	}
 
 	folder := Folder{name: folderParma.folderName, description: folderParma.description,
-		created: time.Now().Format("2006-01-02 15:04:05")}
+		created: time.Now().Format("2006-01-02 15:04:05"), files: make([]File, 0)}
 	owner.folders = append(owner.folders, folder)
 	//fmt.Print("update The len of folders is ", len(owner.folders), "\n")
 	return fmt.Sprintf("Create [%s] successfully. \n", folderParma.folderName), nil
