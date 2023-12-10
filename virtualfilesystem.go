@@ -26,6 +26,13 @@ func isNameValid(str string) bool {
 	return true
 }
 
+func isLengthExcessive(args string, limit int) bool {
+	if len(args) > limit {
+		return true
+	}
+	return false
+}
+
 // 提供line interface 給 VFS
 func (fs *VirtualFileSystem) commandShell(utOption UnitTestOptions) {
 
@@ -45,10 +52,22 @@ func (fs *VirtualFileSystem) commandShell(utOption UnitTestOptions) {
 		args := strings.Fields(command)
 		//if len(os.Args) < 2 {
 		if len(args) < 2 {
-			fmt.Errorf("Invalid command. Usage: command [%s]", args[0])
+			fmt.Errorf("Invalid command. Usage: command [%s]\n", args[0])
 			continue
 			//return
 
+		}
+
+		lengthFlag := true // 檢查字串長度是否超出 100 字元(文件要求)
+		for _, arg := range args {
+			if isLengthExcessive(arg, 100) || !isNameValid(arg) {
+				fmt.Errorf("Invalid command. Usage: command [%s]\n", arg)
+				lengthFlag = true
+				continue
+			}
+		}
+		if lengthFlag == true {
+			continue
 		}
 
 		var msg string = ""
