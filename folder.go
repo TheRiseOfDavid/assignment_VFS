@@ -28,6 +28,15 @@ func (f Folder) getName() string {
 	return f.name
 }
 
+func (f *Folder) selectFile(fileName string) (*File, error) {
+	for i, file := range f.files {
+		if file.name == fileName {
+			return &f.files[i], nil
+		}
+	}
+	return nil, fmt.Errorf("Error: The [%s] doesn't exist.\n", fileName)
+}
+
 func (fs *VirtualFileSystem) createFolder(folderParma FolderOptions) (string, error) {
 	if !isNameValid(folderParma.folderName) {
 		return "", fmt.Errorf("Error: The [%s] contain invalid chars\n", folderParma.folderName)
