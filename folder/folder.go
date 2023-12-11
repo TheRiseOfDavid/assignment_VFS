@@ -1,9 +1,9 @@
 package folder
 
 import (
+	"VFS/file"
+	objectbaseinfo "VFS/object_base_info"
 	"fmt"
-	"virtualfilesystem/file"
-	objectbaseinfo "virtualfilesystem/object_base_info"
 )
 
 type Folder struct {
@@ -17,5 +17,6 @@ func (f *Folder) selectFile(fileName string) (*file.File, error) {
 			return &f.Files[i], nil
 		}
 	}
+
 	return nil, fmt.Errorf("Error: The [%s] doesn't exist.\n", fileName)
 }

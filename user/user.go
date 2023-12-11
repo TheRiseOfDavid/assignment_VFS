@@ -1,9 +1,9 @@
 package user
 
 import (
+	"VFS/folder"
+	objectbaseinfo "VFS/object_base_info"
 	"fmt"
-	"virtualfilesystem/folder"
-	objectbaseinfo "virtualfilesystem/object_base_info"
 )
 
 type User struct {
