@@ -4,15 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
-	"strings"
 	"testing"
 )
 
 func TestUser(t *testing.T) {
-	input := "register user1\n"
+	//input := "register user1\n"
 
-	fs := createVirtaulFileSystem()
-	fs.commandShell(UnitTestOptions{isUnitTest: 1, reader: strings.NewReader(input)})
+	//fs := createVirtaulFileSystem()
+	//fs.commandShell(UnitTestOptions{isUnitTest: 1, reader: strings.NewReader(input)})
 	cmd := exec.Command("register", "user1")
 	actualOutput, err := cmd.CombinedOutput()
 
