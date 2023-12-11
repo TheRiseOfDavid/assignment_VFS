@@ -38,6 +38,7 @@ func (fs *VirtualFileSystem) isUserExist(userName string) bool {
 	return false
 }
 
+// golang 做不出 pointer 泛型，才沒辦法實作
 func (fs *VirtualFileSystem) selectUser(userName string) (*User, error) {
 	for i, owner := range fs.owners {
 		if owner.name == userName {
