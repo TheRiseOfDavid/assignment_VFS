@@ -1,5 +1,5 @@
 package objectbaseinfo
 
 type IdentifyMethod interface {
-	getName() string
+	GetName() string
 }

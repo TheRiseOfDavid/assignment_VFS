@@ -7,5 +7,5 @@ import (
 
 type Folder struct {
 	*objectmanager.ObjectManager[file.File]
-	files []file.File
+	Files []file.File
 }

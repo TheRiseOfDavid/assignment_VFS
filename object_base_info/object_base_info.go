@@ -1,11 +1,11 @@
 package objectbaseinfo
 
 type ObjectBaseInfo struct {
-	name        string
-	description string
-	created     string
+	Name        string
+	Description string
+	Created     string
 }
 
-func (obj *ObjectBaseInfo) GetName() string {
-	return obj.name
+func (obj ObjectBaseInfo) GetName() string {
+	return obj.Name
 }
