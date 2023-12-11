@@ -5,15 +5,32 @@ import (
 	"fmt"
 	"os"
 	"strings"
-	"virtual_file_system/user"
+	"unicode"
 )
 
+// VirtualFileSystem 出發點
 type VirtualFileSystem struct {
-	owners []user.User
+	owners []User
 }
 
 func createVirtaulFileSystem() *VirtualFileSystem {
-	return &VirtualFileSystem{owners: make([]user.User, 0)}
+	return &VirtualFileSystem{owners: make([]User, 0)}
+}
+
+func isNameValid(str string) bool {
+	for _, char := range str {
+		if !unicode.IsLetter(char) && !unicode.IsDigit(char) {
+			return false
+		}
+	}
+	return true
+}
+
+func isLengthExcessive(args string, limit int) bool {
+	if len(args) > limit {
+		return true
+	}
+	return false
 }
 
 // 提供line interface 給 VFS
