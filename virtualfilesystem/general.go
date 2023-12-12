@@ -1,14 +1,12 @@
 package virtualfilesystem
 
 import (
-	"fmt"
 	"unicode"
 )
 
 func isNameValid(str string) bool {
 	for _, char := range str {
-		fmt.Println()
-		if !unicode.Is(unicode.Latin, char) && !unicode.IsDigit(char) {
+		if char != '-' && !unicode.Is(unicode.Latin, char) && !unicode.IsDigit(char) {
 			return false
 		}
 	}

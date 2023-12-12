@@ -11,7 +11,7 @@ type Folder struct {
 	Files []file.File
 }
 
-func (f *Folder) selectFile(fileName string) (*file.File, error) {
+func (f *Folder) SelectFile(fileName string) (*file.File, error) {
 	for i, file := range f.Files {
 		if file.Name == fileName {
 			return &f.Files[i], nil

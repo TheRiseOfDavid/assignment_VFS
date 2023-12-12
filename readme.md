@@ -125,3 +125,8 @@ go run .
       - `Error: The [username] doesn't exist.`
       - `Error: The [foldername] doesn't exist.`
       - `Prompt the user the usage of the command if there is an invalid flag.(should output to STDERR)`
+
+## 還需要補衝的
+
+- 程式結構圖
+- unit test for list-folder
