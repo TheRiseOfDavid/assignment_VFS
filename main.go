@@ -1,6 +1,8 @@
 package main
 
-import "VFS/virtualfilesystem"
+import (
+	"VFS/virtualfilesystem"
+)
 
 func main() {
 	fs := virtualfilesystem.CreateVirtaulFileSystem()

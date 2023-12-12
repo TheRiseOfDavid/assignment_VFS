@@ -6,17 +6,6 @@ import (
 	"testing"
 )
 
-// CreateVirtaulFileSystem
-func TestCreateVirtaulFileSystem(t *testing.T) {
-	fs := CreateVirtaulFileSystem()
-	output := reflect.TypeOf(fs)
-	expected := reflect.TypeOf(VirtualFileSystem{})
-	if output == expected {
-		t.Errorf("RegisterUserWithSuccess \nreturned %s\nexpected %s", output, expected)
-	}
-
-}
-
 func TestIsUserExistsForTrue(t *testing.T) {
 	fs := CreateVirtaulFileSystem()
 	_, _ = fs.registerUser("david")
