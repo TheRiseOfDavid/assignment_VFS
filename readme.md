@@ -128,4 +128,4 @@ go run .
 
 ## Class Diagram
 
-![](./Untitled Diagram.drawio (1).png)
+![](./class_diagram.png)
