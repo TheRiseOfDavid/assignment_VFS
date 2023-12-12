@@ -84,13 +84,13 @@ func (fs *VirtualFileSystem) scannerCommand(command string) (string, error) {
 		parma := options.FolderOptions{UserName: args[1], SortCriteria: "--sort-name", Sortby: "asc"}
 		if len(args) >= 3 {
 			if args[2] != "--sort-name" && args[2] != "--sort-created" {
-				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+				return "", fmt.Errorf("Usage: list folders [username] [--sort-name|--sort-created] [asc|desc]\n")
 			}
 			parma.SortCriteria = args[2]
 		}
 		if len(args) >= 4 {
 			if args[3] != "asc" && args[3] != "desc" {
-				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+				return "", fmt.Errorf("Usage: list folders [username] [--sort-name|--sort-created] [asc|desc]\n")
 			}
 			parma.Sortby = args[3]
 		}

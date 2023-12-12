@@ -63,7 +63,7 @@ func TestCommandShellForListFileErrorWithIncorrectFlags(t *testing.T) {
 func TestCommandShellForListFolderErrorWithIncorrectFlags(t *testing.T) {
 	fs := CreateVirtaulFileSystem()
 	_, err := fs.scannerCommand("list-folders user1 folder1 --sort-name a")
-	expected := "Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n"
+	expected := "Usage: list folders [username] [--sort-name|--sort-created] [asc|desc]\n"
 	if err.Error() != expected {
 		t.Errorf("TestCommandShellForErrorWithInvalidCommand \nreturned %s\nexpected %s", err.Error(), expected)
 	}
