@@ -1,7 +1,5 @@
 # Virtual File System (VFS)
 
-[TOC]
-
 ## Obejctive
 
 - Implement a virtual file system with user and file management capabilities using GoLang 1.20+.
@@ -129,3 +127,7 @@ go run .
 ## Class Diagram
 
 ![](./class_diagram.png)
+
+## Note
+
+- In the `VFS/virtualfilesystem` unit test, we wanted to check the `[list-files|list-folder] --sort-created` feature. To make it easier to compare creation times, we created a `[folder|file]` with a one-second delay.

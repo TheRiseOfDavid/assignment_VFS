@@ -47,3 +47,43 @@ func TestSelectFileForError(t *testing.T) {
 		t.Errorf("TestSelectUserForError \nreturned %s\nexpected %s", err.Error(), expected)
 	}
 }
+
+func TestIsFileExistsForTrue(t *testing.T) {
+	fs := Folder{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "folder",
+	},
+		Files: make([]file.File, 0)}
+
+	fs.Files = append(fs.Files, file.File{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "file1",
+	}})
+	fs.Files = append(fs.Files, file.File{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "file2",
+	}})
+
+	output := fs.IsFileExists("file1")
+	expected := true
+	if output != expected {
+		t.Errorf("TestSelectUserForSuccess \nreturned %t\nexpected %t", output, expected)
+	}
+}
+
+func TestIsFileExistsForFalse(t *testing.T) {
+	fs := Folder{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "folder",
+	},
+		Files: make([]file.File, 0)}
+
+	fs.Files = append(fs.Files, file.File{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "file1",
+	}})
+	fs.Files = append(fs.Files, file.File{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
+		Name: "file2",
+	}})
+
+	output := fs.IsFileExists("file3")
+	expected := false
+	if output != expected {
+		t.Errorf("TestSelectUserForSuccess \nreturned %t\nexpected %t", output, expected)
+	}
+}

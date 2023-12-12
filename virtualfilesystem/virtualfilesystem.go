@@ -83,9 +83,15 @@ func (fs *VirtualFileSystem) scannerCommand(command string) (string, error) {
 	case "list-folders":
 		parma := options.FolderOptions{UserName: args[1], SortCriteria: "--sort-name", Sortby: "asc"}
 		if len(args) >= 3 {
+			if args[2] != "--sort-name" && args[2] != "--sort-created" {
+				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+			}
 			parma.SortCriteria = args[2]
 		}
 		if len(args) >= 4 {
+			if args[3] != "asc" && args[3] != "desc" {
+				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+			}
 			parma.Sortby = args[3]
 		}
 		msg, err = fs.listFolders(parma)
@@ -108,14 +114,20 @@ func (fs *VirtualFileSystem) scannerCommand(command string) (string, error) {
 	case "list-files":
 		parma := options.FileOptions{FolderOptions: options.FolderOptions{UserName: args[1], FolderName: args[2], SortCriteria: "--sort-name", Sortby: "asc"}}
 		if len(args) >= 4 {
+			if args[3] != "--sort-name" && args[3] != "--sort-created" {
+				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+			}
 			parma.SortCriteria = args[3]
 		}
 		if len(args) >= 5 {
+			if args[4] != "asc" && args[4] != "desc" {
+				return "", fmt.Errorf("Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n")
+			}
 			parma.Sortby = args[4]
 		}
 		msg, err = fs.listFiles(parma)
 	default:
-		err = fmt.Errorf("Invalid command. Usage: command [%s]\n", args[0])
+		err = fmt.Errorf("Error: Unrecognized command [%s]\n", args[0])
 	}
 	if err != nil {
 		return "", err

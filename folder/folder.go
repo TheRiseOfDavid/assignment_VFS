@@ -17,6 +17,14 @@ func (f *Folder) SelectFile(fileName string) (*file.File, error) {
 			return &f.Files[i], nil
 		}
 	}
-
 	return nil, fmt.Errorf("Error: The [%s] doesn't exist.\n", fileName)
+}
+
+func (f *Folder) IsFileExists(folderName string) bool {
+	for _, file := range f.Files {
+		if file.Name == folderName {
+			return true
+		}
+	}
+	return false
 }

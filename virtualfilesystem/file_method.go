@@ -29,6 +29,9 @@ func (fs *VirtualFileSystem) createFile(fileParma options.FileOptions) (string, 
 	if err != nil {
 		return "", err
 	}
+	if folder.IsFileExists(fileParma.FileName) {
+		return "", fmt.Errorf("Error: The [%s] has already existed.\n", fileParma.FileName)
+	}
 
 	folder.Files = append(folder.Files, file.File{ObjectBaseInfo: objectbaseinfo.ObjectBaseInfo{
 		Name: fileParma.FileName, Description: fileParma.Description,

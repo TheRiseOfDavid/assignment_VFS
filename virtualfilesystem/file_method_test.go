@@ -104,6 +104,31 @@ func TestCreateFileForErrorWithFolderNotFound(t *testing.T) {
 	}
 }
 
+func TestCreateFileForErrorWithFileExists(t *testing.T) {
+	fs := CreateVirtaulFileSystem()
+	_, _ = fs.registerUser("david")
+	folderParma := options.FolderOptions{
+		UserName:   "david",
+		FolderName: "folder",
+	}
+	_, _ = fs.createFolder(folderParma)
+
+	fileParma := options.FileOptions{
+		FolderOptions: options.FolderOptions{
+			UserName:   "david",
+			FolderName: "folder",
+		},
+		FileName: "file",
+	}
+	_, _ = fs.createFile(fileParma)
+	_, err := fs.createFile(fileParma)
+	expected := "Error: The [file] has already existed.\n"
+	if err.Error() != expected {
+		t.Errorf("TestCreateFileForErrorWithUserNotFound \nreturned %v\nexpected %s",
+			err.Error(), expected)
+	}
+}
+
 func TestDeleteFileForSuccess(t *testing.T) {
 	fs := CreateVirtaulFileSystem()
 	_, _ = fs.registerUser("david")

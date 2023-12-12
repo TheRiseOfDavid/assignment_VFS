@@ -45,7 +45,25 @@ func TestCommandShellForErrorWithInvalidChar(t *testing.T) {
 func TestCommandShellForErrorWithInvalidCommand(t *testing.T) {
 	fs := CreateVirtaulFileSystem()
 	_, err := fs.scannerCommand("re david")
-	expected := "Invalid command. Usage: command [re]\n"
+	expected := "Error: Unrecognized command [re]\n"
+	if err.Error() != expected {
+		t.Errorf("TestCommandShellForErrorWithInvalidCommand \nreturned %s\nexpected %s", err.Error(), expected)
+	}
+}
+
+func TestCommandShellForListFileErrorWithIncorrectFlags(t *testing.T) {
+	fs := CreateVirtaulFileSystem()
+	_, err := fs.scannerCommand("list-files user1 folder1 --sort-name a")
+	expected := "Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n"
+	if err.Error() != expected {
+		t.Errorf("TestCommandShellForErrorWithInvalidCommand \nreturned %s\nexpected %s", err.Error(), expected)
+	}
+}
+
+func TestCommandShellForListFolderErrorWithIncorrectFlags(t *testing.T) {
+	fs := CreateVirtaulFileSystem()
+	_, err := fs.scannerCommand("list-folders user1 folder1 --sort-name a")
+	expected := "Usage: list files [username] [foldername] [--sort-name|--sort-created] [asc|desc]\n"
 	if err.Error() != expected {
 		t.Errorf("TestCommandShellForErrorWithInvalidCommand \nreturned %s\nexpected %s", err.Error(), expected)
 	}
